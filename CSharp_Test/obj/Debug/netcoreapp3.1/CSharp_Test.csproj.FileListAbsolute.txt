@@ -11,3 +11,16 @@ F:\C#Projects\CSharp_Test\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.Assemb
 F:\C#Projects\CSharp_Test\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.dll
 F:\C#Projects\CSharp_Test\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.pdb
 F:\C#Projects\CSharp_Test\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.genruntimeconfig.cache
+D:\GitProjects\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.exe
+D:\GitProjects\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.deps.json
+D:\GitProjects\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.runtimeconfig.json
+D:\GitProjects\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.runtimeconfig.dev.json
+D:\GitProjects\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.dll
+D:\GitProjects\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.pdb
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.csprojAssemblyReference.cache
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.AssemblyInfoInputs.cache
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.AssemblyInfo.cs
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.csproj.CoreCompileInputs.cache
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.dll
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.pdb
+D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.genruntimeconfig.cache
