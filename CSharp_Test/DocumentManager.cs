@@ -42,21 +42,30 @@ namespace CSharp_Test
         /// </summary>
         public bool IsDocumentAvailable => documentQueue.Count > 0;
 
+        /// <summary>
+        /// 显示所有文档
+        /// </summary>
         public void DisplayAllDocuments()
         {
             foreach(TDocument t in documentQueue)
             {
-                Console.WriteLine(t.Title);
+                Console.WriteLine(string.Format("Titile:{0}\tContent:{1}", t.Title,t.Content));
             }
         }
     }
 
+    /// <summary>
+    /// 文档的接口
+    /// </summary>
     public interface IDocument
     {
         string Title { get; set; }
         string Content { get; set; }
     }
 
+    /// <summary>
+    /// 文档类，实现了IDocument接口
+    /// </summary>
     public class Document : IDocument
     {
         public Document() { }

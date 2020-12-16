@@ -20,9 +20,10 @@ namespace CSharp_Test
         public string LastName { get; }
         public string FullName => $"{FirstName} {LastName}";
 
-        int? canNull = null;
+        //int? canNull = null;
         static void Main(string[] args)
         {
+            /*
             Console.WriteLine("x*y=" + Function(y: 10).ToString());
             DisplayArray(1, 2, 3, 4, 5, 6);
 
@@ -42,6 +43,46 @@ namespace CSharp_Test
             {
                 Console.Write(i+" ");
             }
+            */
+
+            /*
+            //测试泛型
+            DocumentManager<Document> docManager = new DocumentManager<Document>();  //声明一个管理类
+            docManager.AddDocument(new Document("Titile A", "Sample A"));
+            docManager.AddDocument(new Document("Titile B", "Sample B"));
+
+            //显示管理器队列中的元素
+            docManager.DisplayAllDocuments();
+            */
+
+            //测试泛型的协变
+            IIndex<Rectangle> rectangles = RectangleCollection.GetRectangles;
+            IIndex<Shape> shapes=rectangles;  //体现了泛型的协变，返回的IIndex<Rectangle>值可以赋值给IIndex<Shape>
+            for (int index = 0; index < shapes.Count; index++)
+                Console.WriteLine(shapes[index].ToString());
+
+            //测试泛型的抗变
+            ShapeDisplay display = new ShapeDisplay();
+            Console.WriteLine($"shapes[0] 's type : {shapes[0].GetType().BaseType}");
+            //!ERROR :编译器报错，因为shape[0]是 Shape,不能使用Rectangle的泛型 -> display.show(shapes[0]);
+
+
+            //测试Nullable
+            Nullable<int> x=4;
+            Console.WriteLine($"x.Value={x.Value}");
+
+            //测试泛型方法和泛型委托
+            var accounts = new List<Account>()
+            {
+                new Account("A",1500),
+                new Account("B",2200),
+                new Account("C",1800),
+                new Account("D",2400)
+            };
+
+            Console.WriteLine($"使用泛型方法计算出的{accounts.Count}个账户的总金额为:{Alorithms.AccumulateSimple(accounts)}");
+            Console.WriteLine($"使用泛型方法&泛型计算出的{accounts.Count}个账户的总金额为:{Alorithms.AccumulateSimple<Account,decimal>(accounts,(item,sum)=>sum+=item.Balance)}");
+
         }
 
         public static int Function(int x=1, int y=1) => x * y;
