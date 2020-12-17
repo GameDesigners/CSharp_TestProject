@@ -23,7 +23,29 @@ namespace CSharp_Test
         //int? canNull = null;
         static void Main(string[] args)
         {
-            /*
+
+
+            BaseKnow_Test();
+            Generic_Test();
+            Array_And_Tuple_Test();
+
+
+        }
+
+        public static int Function(int x=1, int y=1) => x * y;
+
+        public static void DisplayArray(params int[] data)
+        {
+            foreach (int i in data)
+                Console.Write(i + " ");
+        }
+
+        /// <summary>
+        /// 基础测试
+        /// </summary>
+        private static void BaseKnow_Test()
+        {
+            Console.WriteLine("\n.......C#基础部分的代码....................................................");
             Console.WriteLine("x*y=" + Function(y: 10).ToString());
             DisplayArray(1, 2, 3, 4, 5, 6);
 
@@ -31,21 +53,24 @@ namespace CSharp_Test
             Console.WriteLine(dow.ToString());
 
             string s = "Hello World";
-            Console.WriteLine("使用拓展方法调用得到字符串"+s+"的长度，为："+s.GetStringLength());
-
-            Console.WriteLine("\n.......泛型类部分的代码....................................................");
+            Console.WriteLine("使用拓展方法调用得到字符串" + s + "的长度，为：" + s.GetStringLength());
+        }
+        /// <summary>
+        /// 测试泛型的方法
+        /// </summary>
+        private static void Generic_Test()
+        {
+            Console.WriteLine("\n\n.......泛型类部分的代码....................................................");
             var list = new LinkList<int>();
             list.AddLast(2);
             list.AddLast(4);
             list.AddLast(6);
 
-            foreach(var i in list)
+            foreach (var i in list)
             {
-                Console.Write(i+" ");
+                Console.Write(i + " ");
             }
-            */
 
-            /*
             //测试泛型
             DocumentManager<Document> docManager = new DocumentManager<Document>();  //声明一个管理类
             docManager.AddDocument(new Document("Titile A", "Sample A"));
@@ -53,11 +78,11 @@ namespace CSharp_Test
 
             //显示管理器队列中的元素
             docManager.DisplayAllDocuments();
-            */
+
 
             //测试泛型的协变
             IIndex<Rectangle> rectangles = RectangleCollection.GetRectangles;
-            IIndex<Shape> shapes=rectangles;  //体现了泛型的协变，返回的IIndex<Rectangle>值可以赋值给IIndex<Shape>
+            IIndex<Shape> shapes = rectangles;  //体现了泛型的协变，返回的IIndex<Rectangle>值可以赋值给IIndex<Shape>
             for (int index = 0; index < shapes.Count; index++)
                 Console.WriteLine(shapes[index].ToString());
 
@@ -68,7 +93,7 @@ namespace CSharp_Test
 
 
             //测试Nullable
-            Nullable<int> x=4;
+            Nullable<int> x = 4;
             Console.WriteLine($"x.Value={x.Value}");
 
             //测试泛型方法和泛型委托
@@ -81,16 +106,86 @@ namespace CSharp_Test
             };
 
             Console.WriteLine($"使用泛型方法计算出的{accounts.Count}个账户的总金额为:{Alorithms.AccumulateSimple(accounts)}");
-            Console.WriteLine($"使用泛型方法&泛型计算出的{accounts.Count}个账户的总金额为:{Alorithms.AccumulateSimple<Account,decimal>(accounts,(item,sum)=>sum+=item.Balance)}");
-
+            Console.WriteLine($"使用泛型方法&泛型计算出的{accounts.Count}个账户的总金额为:{Alorithms.AccumulateSimple<Account, decimal>(accounts, (item, sum) => sum += item.Balance)}");
         }
 
-        public static int Function(int x=1, int y=1) => x * y;
-
-        public static void DisplayArray(params int[] data)
+        /// <summary>
+        /// 数组和元组测试函数
+        /// </summary>
+        private static void Array_And_Tuple_Test()
         {
-            foreach (int i in data)
-                Console.Write(i + " ");
+            //数组和元组
+            Console.WriteLine("\n\n.......数组与元组部分的代码....................................................");
+            Array intArray1 = Array.CreateInstance(typeof(int), 5);
+            for (int index = 0; index < intArray1.Length; index++)
+                intArray1.SetValue(index * 10, index);
+            for (int index = 0; index < intArray1.Length; index++)
+                Console.WriteLine($"intArray1[{index}]={intArray1.GetValue(index)}");
+
+            int[] intArray2 = (int[])intArray1; //强制类型转换，OK
+
+            int[] intArrayCopyVersion = (int[])intArray2.Clone();  //复制数组
+
+            string[] names = { "Christina Aguilera", "Shakira", "Beyonce", "Lady Gaga" };
+            Array.Sort(names);  //抽象类中实现的排序算法（利用默认的规则）,继承自IComparable接口
+            Console.WriteLine("\n> 排序后的names");
+            foreach (var name in names)
+                Console.WriteLine(name);
+
+            Person[] persons =
+            {
+                new Person{ FirstName="Damon",LastName="Hill"},
+                new Person{ FirstName="Niki",LastName="Lauda"},
+                new Person{ FirstName="Ayrton",LastName="Senna"},
+                new Person{ FirstName="Graham",LastName="Hill"}
+            };
+            Array.Sort(persons);  //排序，person已经重载了比较的规则
+            Console.WriteLine("\n> 排序后的persons");
+            foreach (var p in persons)
+                Console.WriteLine(p.ToString());
+
+            Array.Sort(persons, new PersonComparer(PersonCompareType.FirstName));
+            Console.WriteLine("\n> 根据FirstName排序后的persons");
+            foreach (var p in persons)
+                Console.WriteLine(p.ToString());
+
+            ArraySegment<Person> part = new ArraySegment<Person>(persons, 2, 2);  //从索引2开始，引用两个元素
+            Console.WriteLine("\n> 截取Person后所得的ArraySegment数组");
+            foreach (var p in part)
+                Console.WriteLine(p.ToString());
+
+            Console.WriteLine("\n> 使用yield生成的一个简易的集合");
+            var helloCollections = new HelloCollection();
+            foreach (var s in helloCollections)
+            {
+                Console.WriteLine(s);
+            }
+
+            Console.WriteLine("\n> 测试yeild实现的GameMove");
+            var game = new GameMoves();
+            IEnumerator enumerator = game.Cross();
+            while (enumerator.MoveNext())
+                enumerator = enumerator.Current as IEnumerator;
+            Console.WriteLine("\n> 测试Person实现的IEquatable接口");
+            var janet = new Person { FirstName = "Janet", LastName = "Jackson" };
+            Person[] persons1 =
+            {
+                new Person{FirstName="Michael",LastName="Jackson"},
+                janet
+            };
+
+            Person[] persons2 =
+            {
+                new Person{FirstName="Michael",LastName="Jackson"},
+                janet
+            };
+
+            if (persons1 != persons2) { Console.WriteLine("not the same reference"); }
+
+            var t1 = Tuple.Create(1, "Stephanie");
+            var t2 = Tuple.Create(1, "Stephanie");
+            if (t1 != t2) Console.WriteLine("not the same reference to the tuple");
+            if (t1.Equals(t2)) Console.WriteLine("the same content");
         }
     }
 }

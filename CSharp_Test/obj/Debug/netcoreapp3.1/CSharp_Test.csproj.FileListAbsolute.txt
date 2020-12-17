@@ -24,3 +24,16 @@ D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Tes
 D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.dll
 D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.pdb
 D:\GitProjects\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.genruntimeconfig.cache
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.exe
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.deps.json
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.runtimeconfig.json
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.runtimeconfig.dev.json
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.dll
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\bin\Debug\netcoreapp3.1\CSharp_Test.pdb
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.csprojAssemblyReference.cache
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.AssemblyInfoInputs.cache
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.AssemblyInfo.cs
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.csproj.CoreCompileInputs.cache
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.dll
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.pdb
+E:\ZhuSenlin Project\C#\CSharp_TestProject\CSharp_Test\obj\Debug\netcoreapp3.1\CSharp_Test.genruntimeconfig.cache

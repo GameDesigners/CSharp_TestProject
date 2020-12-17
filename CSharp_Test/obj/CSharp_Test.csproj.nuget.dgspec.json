@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\C#Projects\\CSharp_Test\\CSharp_Test\\CSharp_Test.csproj": {}
+    "E:\\ZhuSenlin Project\\C#\\CSharp_TestProject\\CSharp_Test\\CSharp_Test.csproj": {}
   },
   "projects": {
-    "F:\\C#Projects\\CSharp_Test\\CSharp_Test\\CSharp_Test.csproj": {
+    "E:\\ZhuSenlin Project\\C#\\CSharp_TestProject\\CSharp_Test\\CSharp_Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\C#Projects\\CSharp_Test\\CSharp_Test\\CSharp_Test.csproj",
+        "projectUniqueName": "E:\\ZhuSenlin Project\\C#\\CSharp_TestProject\\CSharp_Test\\CSharp_Test.csproj",
         "projectName": "CSharp_Test",
-        "projectPath": "F:\\C#Projects\\CSharp_Test\\CSharp_Test\\CSharp_Test.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "F:\\C#Projects\\CSharp_Test\\CSharp_Test\\obj\\",
+        "projectPath": "E:\\ZhuSenlin Project\\C#\\CSharp_TestProject\\CSharp_Test\\CSharp_Test.csproj",
+        "packagesPath": "C:\\Users\\wxs\\.nuget\\packages\\",
+        "outputPath": "E:\\ZhuSenlin Project\\C#\\CSharp_TestProject\\CSharp_Test\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\wxs\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
