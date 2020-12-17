@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSharp_Test
 {
@@ -29,7 +30,9 @@ namespace CSharp_Test
             Generic_Test();
             Array_And_Tuple_Test();
 
+            FileAndStream_Test();
 
+            //Network_Test();
         }
 
         public static int Function(int x=1, int y=1) => x * y;
@@ -186,6 +189,45 @@ namespace CSharp_Test
             var t2 = Tuple.Create(1, "Stephanie");
             if (t1 != t2) Console.WriteLine("not the same reference to the tuple");
             if (t1.Equals(t2)) Console.WriteLine("the same content");
+        }
+
+        private static void FileAndStream_Test()
+        {
+            Console.WriteLine("\n\n.......C#文件和流测试的代码....................................................");
+
+            IOMessageCollection col = new IOMessageCollection();
+            FileManager fileManager = new FileManager();
+            FolderManager folderManager = new FolderManager();
+            StreamManager streamManager = new StreamManager();
+
+            Console.WriteLine("\n> 此计算机的磁盘信息");
+            col.ShowDrivesInfo();
+
+            Console.WriteLine("\n> 计算机用户文件夹");
+            Console.WriteLine(col.GetDocumentsFolder());
+
+            Console.WriteLine("\n> 获取文件信息");
+            fileManager.FileInformation("E:\\CODE.txt");
+
+            Console.WriteLine("\n> 创建文件CODE.txt");
+            fileManager.CreateAFile("CODE.txt");
+
+            Console.WriteLine("\n> 复制文件CODE.txt");
+            fileManager.CopyAFile("E:\\CODE.txt", "E:\\\\COPY_TEST\\CODE.txt");
+            fileManager.CopyAFile("E:\\CODE.txt", "E:\\\\COPY_TEST\\CODE - 副本.txt");
+
+            Console.WriteLine("\n> 删除文件夹E:\\\\COPY_TEST的副本文件");
+            folderManager.DeleteDuplicateFile("E:\\\\COPY_TEST",true);
+
+            Console.WriteLine("\n> 使用FileStream流读取txt");
+            streamManager.ReadFileUsingFileStream("E:\\CODE.txt");
+            Console.WriteLine("\n> 使用FileStream流写入txt");
+            streamManager.WriteTextFile();
+        }
+        private static void Network_Test()
+        {
+            Console.WriteLine("\n\n.......C#网络测试的代码....................................................");
+            
         }
     }
 }
