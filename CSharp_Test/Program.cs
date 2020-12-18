@@ -33,6 +33,8 @@ namespace CSharp_Test
             FileAndStream_Test();
 
             //Network_Test();
+
+            
         }
 
         public static int Function(int x=1, int y=1) => x * y;
@@ -199,12 +201,16 @@ namespace CSharp_Test
             FileManager fileManager = new FileManager();
             FolderManager folderManager = new FolderManager();
             StreamManager streamManager = new StreamManager();
+            CompressManager compressManager = new CompressManager();
 
             Console.WriteLine("\n> 此计算机的磁盘信息");
             col.ShowDrivesInfo();
 
             Console.WriteLine("\n> 计算机用户文件夹");
             Console.WriteLine(col.GetDocumentsFolder());
+
+            Console.WriteLine("\n> 注册文件状态监视事件的方法");
+            fileManager.WatchFiles();
 
             Console.WriteLine("\n> 获取文件信息");
             fileManager.FileInformation("E:\\CODE.txt");
@@ -216,13 +222,55 @@ namespace CSharp_Test
             fileManager.CopyAFile("E:\\CODE.txt", "E:\\\\COPY_TEST\\CODE.txt");
             fileManager.CopyAFile("E:\\CODE.txt", "E:\\\\COPY_TEST\\CODE - 副本.txt");
 
+            
+            
+
             Console.WriteLine("\n> 删除文件夹E:\\\\COPY_TEST的副本文件");
             folderManager.DeleteDuplicateFile("E:\\\\COPY_TEST",true);
 
             Console.WriteLine("\n> 使用FileStream流读取txt");
             streamManager.ReadFileUsingFileStream("E:\\CODE.txt");
+
             Console.WriteLine("\n> 使用FileStream流写入txt");
             streamManager.WriteTextFile();
+
+            //Console.WriteLine("\n> 生成一个文件");
+            //int recordSize = 1000000000;
+            //Task task = streamManager.CreateSampleFile(recordSize);
+            //streamManager.RandomAccessSample(200);
+
+            Console.WriteLine("\n> 使用StreamReader读取文件");
+            streamManager.ReadFileUsingReader();
+
+            Console.WriteLine("\n> 使用StreamWriter写入文件");
+            streamManager.ReadFileUsingWriter(lines:new string[] {
+                "我所见的世界太小，而真实的世界太大。",
+                "所以，我希望可以去看到更远的地方，看看那里的风景。",
+                "我始终这么觉得，却发现现实中，自己的脚却不愿意挪动半步。",
+                "是啊，有太多太多可以束缚着自己的事情，或许这只是借口，或许，更多的是自甘束缚。",
+                "只能心中不断地提醒自己，外面地世界，陌生而又可怕。",
+                "陌生，却想要去熟悉，但却心悸，真是一个复杂的矛盾体。",
+                "\n",
+                "发现自己就像一个早熟的老头，",
+                "划定了自己的活动范围，",
+                "然后，用失神的眼睛，",
+                "一日复一日不变地，",
+                "窥视着那一方，吸引着每一个年轻人去探索的天空。"
+            });
+
+            Console.WriteLine("\n> 使用BinaryWriter写入文件");
+            streamManager.WriteFileUsingBinaryWriter();
+
+            Console.WriteLine("\n> 使用BinaryReader读取文件");
+            streamManager.ReadFileUsingBinaryReader();
+
+            Console.WriteLine("\n> 使用DeflateStream压缩文件");
+            compressManager.CompressFile();
+            Console.WriteLine("\n> 使用DeflateStream解压缩文件");
+            compressManager.DecompressFile();
+
+            //Console.WriteLine("\n> 使用ZipArchive压缩ZIP文件");
+            //compressManager.CreateZipFile();
         }
         private static void Network_Test()
         {
