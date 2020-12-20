@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CSharp_Test
@@ -26,9 +27,9 @@ namespace CSharp_Test
         {
 
 
-            BaseKnow_Test();
-            Generic_Test();
-            Array_And_Tuple_Test();
+            //BaseKnow_Test();
+            //Generic_Test();
+            //Array_And_Tuple_Test();
 
             FileAndStream_Test();
 
@@ -203,6 +204,21 @@ namespace CSharp_Test
             StreamManager streamManager = new StreamManager();
             CompressManager compressManager = new CompressManager();
 
+            string rootPath = @"TestResource\";
+            string rootModelFile = rootPath + "CODE.txt";                         //根目录下的CODE.txt文件
+            string secondFolderPath = rootPath + @"COPY_TEST\";                   //COPY_TEST目录
+            string COPY_TEST_ModelName = rootPath + @"COPY_TEST\CODE.txt";        //COPY_TEST目录下的CODE.txt文件
+            string COPY_TEST_CopyName = rootPath + @"COPY_TEST\CODE - 副本.txt";   //COPY_TEST目录下的CODE.txt副本文件
+            string FileStream_WriteFileName = secondFolderPath + "WriteFile.txt"; //使用FileStream写入的文件路径
+            string BigDataFilePath = rootPath + "BigDataFile.txt";                //生成多数据文件路径
+            string ArticleFilePath = secondFolderPath + @"诗.txt";
+            string BinaryOutPutFile = secondFolderPath + "BinaryOutPutFile.data"; //二进制文件
+            string NonCompressFilePath = secondFolderPath+ "诗.txt";
+            string CompressedFilePath = secondFolderPath+"测试文件压缩包.pack";
+            string DecompressedFilePath = secondFolderPath+"解压缩结果.txt";
+            string CompressFolderPath_ZIP = secondFolderPath;
+            string CompressedFilePath_ZIP = rootPath +"压缩文件.zip";
+
             Console.WriteLine("\n> 此计算机的磁盘信息");
             col.ShowDrivesInfo();
 
@@ -210,40 +226,43 @@ namespace CSharp_Test
             Console.WriteLine(col.GetDocumentsFolder());
 
             Console.WriteLine("\n> 注册文件状态监视事件的方法");
-            fileManager.WatchFiles();
+            fileManager.WatchFiles(rootPath, "*.*");
 
-            Console.WriteLine("\n> 获取文件信息");
-            fileManager.FileInformation("E:\\CODE.txt");
+            Console.WriteLine($"\n> 获取文件夹 [{rootPath}]信息");
+            folderManager.FolderInfomation(rootPath);
 
-            Console.WriteLine("\n> 创建文件CODE.txt");
-            fileManager.CreateAFile("CODE.txt");
+            Console.WriteLine($"\n> 创建文件[CODE.txt]");
+            fileManager.CreateAFile(rootModelFile);
 
-            Console.WriteLine("\n> 复制文件CODE.txt");
-            fileManager.CopyAFile("E:\\CODE.txt", "E:\\\\COPY_TEST\\CODE.txt");
-            fileManager.CopyAFile("E:\\CODE.txt", "E:\\\\COPY_TEST\\CODE - 副本.txt");
+            Console.WriteLine($"\n> 获取文件[CODE.txt]信息");
+            fileManager.FileInformation(rootModelFile);
 
-            
-            
+            Console.WriteLine("\n> 复制文件[CODE.txt]");
+            fileManager.CopyAFile(rootModelFile, COPY_TEST_ModelName);
+            fileManager.CopyAFile(COPY_TEST_ModelName, COPY_TEST_CopyName);
 
-            Console.WriteLine("\n> 删除文件夹E:\\\\COPY_TEST的副本文件");
-            folderManager.DeleteDuplicateFile("E:\\\\COPY_TEST",true);
+            Console.WriteLine($"\n> 删除文件夹[{secondFolderPath}]的副本文件");
+            folderManager.DeleteDuplicateFile(secondFolderPath, true);
 
-            Console.WriteLine("\n> 使用FileStream流读取txt");
-            streamManager.ReadFileUsingFileStream("E:\\CODE.txt");
+            Console.WriteLine($"\n> 使用FileStream流读取[{rootModelFile}]");
+            streamManager.ReadFileUsingFileStream(rootModelFile);
 
             Console.WriteLine("\n> 使用FileStream流写入txt");
-            streamManager.WriteTextFile();
+            streamManager.WriteTextFile(FileStream_WriteFileName);
+
+            
 
             //Console.WriteLine("\n> 生成一个文件");
             //int recordSize = 1000000000;
-            //Task task = streamManager.CreateSampleFile(recordSize);
-            //streamManager.RandomAccessSample(200);
+            //Task task = streamManager.CreateSampleFile(recordSize, BigDataFilePath);
 
-            Console.WriteLine("\n> 使用StreamReader读取文件");
-            streamManager.ReadFileUsingReader();
+            //Console.WriteLine($"\n> 从大数据文件[ {Path.GetFileName(BigDataFilePath)}]中定点查找：");
+            //streamManager.RandomAccessSample(BigDataFilePath);  //有点问题
+
+            
 
             Console.WriteLine("\n> 使用StreamWriter写入文件");
-            streamManager.ReadFileUsingWriter(lines:new string[] {
+            streamManager.WriteFileUsingWriter(ArticleFilePath,lines: new string[] {
                 "我所见的世界太小，而真实的世界太大。",
                 "所以，我希望可以去看到更远的地方，看看那里的风景。",
                 "我始终这么觉得，却发现现实中，自己的脚却不愿意挪动半步。",
@@ -258,20 +277,24 @@ namespace CSharp_Test
                 "窥视着那一方，吸引着每一个年轻人去探索的天空。"
             });
 
+            Console.WriteLine("\n> 使用StreamReader读取文件");
+            streamManager.ReadFileUsingReader(ArticleFilePath);
+
             Console.WriteLine("\n> 使用BinaryWriter写入文件");
-            streamManager.WriteFileUsingBinaryWriter();
+            streamManager.WriteFileUsingBinaryWriter(BinaryOutPutFile);
 
             Console.WriteLine("\n> 使用BinaryReader读取文件");
-            streamManager.ReadFileUsingBinaryReader();
+            streamManager.ReadFileUsingBinaryReader(BinaryOutPutFile);
 
             Console.WriteLine("\n> 使用DeflateStream压缩文件");
-            compressManager.CompressFile();
+            compressManager.CompressFile(NonCompressFilePath,CompressedFilePath);
             Console.WriteLine("\n> 使用DeflateStream解压缩文件");
-            compressManager.DecompressFile();
+            compressManager.DecompressFile(CompressedFilePath,DecompressedFilePath);
 
-            //Console.WriteLine("\n> 使用ZipArchive压缩ZIP文件");
-            //compressManager.CreateZipFile();
+            Console.WriteLine("\n> 使用ZipArchive压缩ZIP文件");
+            compressManager.CreateZipFile(CompressFolderPath_ZIP,CompressedFilePath_ZIP);
         }
+
         private static void Network_Test()
         {
             Console.WriteLine("\n\n.......C#网络测试的代码....................................................");

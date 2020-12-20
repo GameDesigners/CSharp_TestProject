@@ -10,6 +10,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+/*
+ *   此代码文件主要测试
+ *   C#文件和流的API
+ */
 namespace CSharp_Test
 {
     /// <summary>
@@ -42,7 +46,7 @@ namespace CSharp_Test
         }
 
         /// <summary>
-        /// 用户文件夹
+        /// 用户文件夹(存在问题，为什么Path.Combine不允许添加驱动盘名称)
         /// </summary>
         /// <returns></returns>
         public string GetDocumentsFolder()
@@ -51,11 +55,69 @@ namespace CSharp_Test
             return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 #else
             string drive = Environment.GetEnvironmentVariable("HOMEDRIVE");
-            //Console.WriteLine(drive);
+            Console.WriteLine(drive);
             string path = Environment.GetEnvironmentVariable("HOMEPATH");
             //Console.WriteLine(path);
-            return drive + "\\\\" + Path.Combine(path, "document");
+            return Path.Combine(drive+@"\\",path, "document");
 #endif
+        }
+    }
+
+    /// <summary>
+    /// 文件夹信息和操作
+    /// </summary>
+    public class FolderManager
+    {
+        /// <summary>
+        /// 获取文件夹信息
+        /// </summary>
+        /// <param name="folderName"></param>
+        public void FolderInfomation(string folderName)
+        {
+            DirectoryInfo folderInfo = new DirectoryInfo(folderName);
+            Console.WriteLine($"{folderName}  共{folderInfo.GetFiles().Length}个文件...");
+            FileInfo[] files = folderInfo.GetFiles();
+            foreach (var f in files)
+                Console.WriteLine($"  -> {f.FullName}");
+        }
+
+        /// <summary>
+        /// 删除文件夹中的文件副本
+        /// </summary>
+        /// <param name="directory">文件夹路径</param>
+        /// <param name="checkonly">是否保护文件（是否可删除）</param>
+        public void DeleteDuplicateFile(string directory, bool checkonly)
+        {
+            if (!Directory.Exists(directory)) return;
+            IEnumerable<string> fileNames = Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories);
+            string previousFileName = string.Empty;
+
+            //Console.WriteLine("文件列表：");
+            //foreach (string filename in fileNames)
+            //    Console.WriteLine(filename);
+            //Console.WriteLine();
+
+            foreach (string fileName in fileNames)
+            {
+                string previousName = Path.GetFileNameWithoutExtension(previousFileName);
+                if (!string.IsNullOrEmpty(previousName))
+                {
+                    if (previousName.EndsWith("副本") && fileName.StartsWith(previousFileName.Substring(0, previousFileName.LastIndexOf(" - 副本"))))
+                    {
+                        var copiedFile = new FileInfo(previousFileName);
+                        var originalFile = new FileInfo(fileName);
+                        if (copiedFile.Length == originalFile.Length)
+                        {
+                            Console.WriteLine($"delete {copiedFile.FullName}");
+                            if (!checkonly)
+                            {
+                                copiedFile.Delete();
+                            }
+                        }
+                    }
+                }
+                previousFileName = fileName;
+            }
         }
     }
 
@@ -86,10 +148,13 @@ namespace CSharp_Test
         /// <summary>
         /// 创建一个位于E盘根目录的文件
         /// </summary>
-        /// <param name="filename"></param>
-        public void CreateAFile(string filename)
+        /// <param name="filePath">文件路径</param>
+        public void CreateAFile(string filePath)
         {
-            string fileFullPath = Path.Combine("E:", filename);
+            if (!File.Exists(filePath))  //文件不存在
+                File.Create(filePath);
+
+            string fileFullPath = Path.Combine(filePath);
             File.WriteAllText(fileFullPath, "hello world");
             Console.WriteLine("文件创建成功,日期："+DateTime.Now.ToString());
         }
@@ -101,6 +166,14 @@ namespace CSharp_Test
         /// <param name="targetPath"></param>
         public void CopyAFile(string srcPath,string targetPath)
         {
+            //判断文件是否文件夹,如果不存在则创建文件夹
+            if (!Directory.Exists(Path.GetDirectoryName(targetPath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+            if(!File.Exists(srcPath))
+            {
+                Console.WriteLine("src resource is null");
+                return;
+            }
             if(File.Exists(targetPath))
             {
                 File.Delete(targetPath);
@@ -118,7 +191,7 @@ namespace CSharp_Test
         /// </summary>
         /// <param name="path"></param>
         /// <param name="filter"></param>
-        public void WatchFiles(string folderName= "E:\\\\COPY_TEST", string filter="*.txt")
+        public void WatchFiles(string folderName,string filter)
         {
             var watcher = new FileSystemWatcher(folderName, filter) { IncludeSubdirectories = true };
 
@@ -128,7 +201,7 @@ namespace CSharp_Test
             watcher.Renamed += OnFileChanged;
 
             watcher.EnableRaisingEvents = true;
-            Console.WriteLine("watching file change");
+            Console.WriteLine("watching file change...");
 
         }
 
@@ -141,65 +214,24 @@ namespace CSharp_Test
         }
     }
 
-    /// <summary>
-    /// 文件夹信息和操作
-    /// </summary>
-    public class FolderManager
-    {
-        /// <summary>
-        /// 删除文件夹中的文件副本
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <param name="checkonly"></param>
-        public void DeleteDuplicateFile(string directory, bool checkonly)
-        {
-            IEnumerable<string> fileNames = Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories);
-            string previousFileName = string.Empty;
-
-            //Console.WriteLine("文件列表：");
-            //foreach (string filename in fileNames)
-            //    Console.WriteLine(filename);
-            //Console.WriteLine();
-
-            foreach (string fileName in fileNames)
-            {
-                string previousName = Path.GetFileNameWithoutExtension(previousFileName);
-                if(!string.IsNullOrEmpty(previousName))
-                {
-                    if(previousName.EndsWith("副本") &&fileName.StartsWith(previousFileName.Substring(0, previousFileName.LastIndexOf(" - 副本"))))
-                    {
-                        var copiedFile = new FileInfo(previousFileName);
-                        var originalFile = new FileInfo(fileName);
-                        if (copiedFile.Length == originalFile.Length)
-                        {
-                            Console.WriteLine($"delete {copiedFile.FullName}");
-                            if (!checkonly)
-                            {
-                                copiedFile.Delete();
-                            }
-                        }
-                    }
-                }
-                previousFileName = fileName;
-            }
-        }
-    }
+    
 
     /// <summary>
     /// 流操作
     /// </summary>
     public class StreamManager
     {
-        const string SampleFilePath = "E:\\samplefile.txt";
         const string SampleOutputFilePath = "E:\\\\COPY_TEST\\outputFile.txt";
         const string BinaryOutPutFilePath = "E:\\\\COPY_TEST\\BinaryOutPutFile.data";
 
         #region Use FileStream
         public void ReadFileUsingFileStream(string filename)
         {
+            if (!File.Exists(filename)) return;
+
             const int bufferSize = 4096;
             const int BUFFERSIZE = 256;
-            File.OpenRead(filename);  //返回一个FileStream
+            File.OpenRead(filename);  //返回一个FileStream,这是下面的new FileStream的一个简单方法
             using(var stream=new FileStream(filename,FileMode.Open,FileAccess.Read,FileShare.Read))
             {
                 ShowStreamInformation(stream);  //显示stream的信息
@@ -207,22 +239,19 @@ namespace CSharp_Test
 
                 byte[] buffer = new byte[bufferSize];
 
-                bool completed = false;
-
                 do
                 {
                     int nread = stream.Read(buffer, 0, BUFFERSIZE);
-                    if (nread == 0) completed = true;
+                    if (nread == 0)  break; //完成则要跳出循环
                     if (nread < BUFFERSIZE)
                     {
                         Array.Clear(buffer, nread, BUFFERSIZE - nread);
                     }
-
                     string s = encoding.GetString(buffer, 0, nread);
-                    Console.WriteLine($"read {nread} bytes");
-                    Console.WriteLine($"read result:  {s}");
+                    Console.WriteLine($"···>read {nread} bytes");
+                    Console.WriteLine($"···>read result:  {s}");
                 }
-                while (!completed);
+                while (true);
             }
         }
 
@@ -273,10 +302,10 @@ namespace CSharp_Test
             return encoding;
         }
 
-        public void WriteTextFile()
+        public void WriteTextFile(string textFileName)
         {
-            string tempTextFileName = Path.ChangeExtension(Path.GetTempFileName(), "txt");
-            using(FileStream stream=File.OpenWrite(tempTextFileName))
+            //string tempTextFileName = Path.ChangeExtension(Path.GetTempFileName(), "txt");
+            using(FileStream stream=File.OpenWrite(textFileName))
             {
                 //给流发送三个字节的UTF-8序言
                 stream.WriteByte(0xef);
@@ -286,7 +315,7 @@ namespace CSharp_Test
                 string content = "hello world!";
                 byte[] buffer = Encoding.UTF8.GetBytes(content);
                 stream.Write(buffer, 0, buffer.Length);
-                Console.WriteLine($"file{stream.Name} written. filename -> {tempTextFileName}");
+                Console.WriteLine($"file {stream.Name} written.\nfilename -> {textFileName}");
             }
         }
     
@@ -328,9 +357,9 @@ namespace CSharp_Test
         }
 
         
-        public async Task CreateSampleFile(int nRecords)
+        public async Task CreateSampleFile(int nRecords,string bigDataFilePath)
         {
-            FileStream stream = File.Create(SampleFilePath);
+            FileStream stream = File.Create(bigDataFilePath);
             using(var writer=new StreamWriter(stream))
             {
                 var r = new Random();
@@ -356,11 +385,16 @@ namespace CSharp_Test
         /// 键盘输入变量为起始点
         /// </summary>
         /// <param name="recordSize"></param>
-        public void RandomAccessSample(int recordSize)
+        public void RandomAccessSample(string bigDataFilePath)
         {
+            if (!File.Exists(bigDataFilePath)) return;
+            //显示大数据文件
+            Console.WriteLine("显示所有数据：");
+            Console.WriteLine(File.ReadAllText(bigDataFilePath));
+            int recordSize = (File.ReadAllLines(bigDataFilePath)[0]+"\n\n").ToString().Length;
             try
             {
-                using(FileStream stream =File.OpenRead(SampleFilePath))
+                using(FileStream stream =File.OpenRead(bigDataFilePath))
                 {
                     byte[] buffer = new byte[recordSize];
                     do
@@ -374,7 +408,12 @@ namespace CSharp_Test
                             int record;
                             if (int.TryParse(line, out record))
                             {
-                                stream.Seek((record - 1) * recordSize, SeekOrigin.Begin);
+                                if (record < 0)
+                                {
+                                    Console.WriteLine("输入数值不合法(<0)");
+                                    continue;
+                                }
+                                stream.Seek(record * recordSize, SeekOrigin.Begin);
                                 stream.Read(buffer, 0, recordSize);
                                 string s = Encoding.UTF8.GetString(buffer);
                                 Console.WriteLine($"records:\n{s}");
@@ -401,7 +440,7 @@ namespace CSharp_Test
         /// 使用Streamreader读取文件
         /// </summary>
         /// <param name="filename"></param>
-        public void ReadFileUsingReader(string filename=SampleFilePath)
+        public void ReadFileUsingReader(string filename)
         {
             /*
              * 注意：StreamReader默认使用UTF-8编码，读取特殊编码有两种方法
@@ -433,10 +472,10 @@ namespace CSharp_Test
         /// 使用StreamWriter写入文件
         /// </summary>
         /// <param name="filename"></param>
-        public void ReadFileUsingWriter(string[] lines,string filename= SampleOutputFilePath)
+        public void WriteFileUsingWriter(string filename, string[] lines)
         {
             var outputStream = File.OpenWrite(filename);
-            using (var writer=new StreamWriter(outputStream))
+            using (var writer = new StreamWriter(outputStream))
             {
                 byte[] preamble = Encoding.UTF8.GetPreamble();
                 outputStream.Write(preamble, 0, preamble.Length);
@@ -455,7 +494,7 @@ namespace CSharp_Test
         /// 使用BinaryWriter写入文件
         /// </summary>
         /// <param name="binFile"></param>
-        public void WriteFileUsingBinaryWriter(string binFile= BinaryOutPutFilePath)
+        public void WriteFileUsingBinaryWriter(string binFile)
         {
             var outputStream = File.Create(binFile);
             using(var writer =new BinaryWriter(outputStream))
@@ -475,7 +514,7 @@ namespace CSharp_Test
         /// BinaryReader读取文件
         /// </summary>
         /// <param name="binFile"></param>
-        public void ReadFileUsingBinaryReader(string binFile=BinaryOutPutFilePath)
+        public void ReadFileUsingBinaryReader(string binFile)
         {
             /*
              * 变量的顺序一定要与写入时相对应
@@ -502,14 +541,13 @@ namespace CSharp_Test
         const string CompressedFilePath = "E:\\\\COPY_TEST\\测试文件压缩包.pack";
         const string DecompressedFilePath = "E:\\\\COPY_TEST\\解压缩结果.txt";
 
-        const string CompressFolderPath_ZIP = "E:\\\\COPY_TEST";
-        const string CompressedFilePath_ZIP = "E:\\压缩文件.zip";
+
         /// <summary>
         /// 压缩文件
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="compressedFileName"></param>
-        public void CompressFile(string fileName=NonCompressFilePath,string compressedFileName=CompressedFilePath)
+        public void CompressFile(string fileName,string compressedFileName)
         {
             using (FileStream inputStream=File.Open(fileName,FileMode.Open))
             {
@@ -527,7 +565,7 @@ namespace CSharp_Test
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="decompressFileName"></param>
-        public void DecompressFile(string filename= CompressedFilePath, string decompressFileName=DecompressedFilePath)
+        public void DecompressFile(string filename, string decompressFileName)
         {
             FileStream inputStream = File.OpenRead(filename);
             using(MemoryStream outputStream=new MemoryStream())
@@ -548,7 +586,7 @@ namespace CSharp_Test
         /// </summary>
         /// <param name="directiory"></param>
         /// <param name="zipFile"></param>
-        public void CreateZipFile(string directiory= CompressFolderPath_ZIP, string zipFile=CompressedFilePath_ZIP)
+        public void CreateZipFile(string directiory, string zipFile)
         {
             FileStream zipStream = File.OpenWrite(zipFile);
             using(var archive =new ZipArchive(zipStream,ZipArchiveMode.Create))
