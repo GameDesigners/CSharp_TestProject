@@ -31,11 +31,12 @@ namespace CSharp_Test
             //Generic_Test();
             //Array_And_Tuple_Test();
 
-            FileAndStream_Test();
+            Operators_AndForceTypeConvert_Test();
+            //FileAndStream_Test();
 
             //Network_Test();
 
-            
+
         }
 
         public static int Function(int x=1, int y=1) => x * y;
@@ -192,6 +193,33 @@ namespace CSharp_Test
             var t2 = Tuple.Create(1, "Stephanie");
             if (t1 != t2) Console.WriteLine("not the same reference to the tuple");
             if (t1.Equals(t2)) Console.WriteLine("the same content");
+        }
+
+        private static void Operators_AndForceTypeConvert_Test()
+        {
+            Console.WriteLine("\n> check和uncheck运算符");
+            Operators.CheckAndUnCheck();
+            Console.WriteLine("\n> is运算符");
+            Operators.Is_Operator();
+            Console.WriteLine("\n> as运算符");
+            Operators.As_Operator();
+            Console.WriteLine("\n> sizeof()运算符");
+            Operators.SizeOf_Operator();
+            Console.WriteLine("\n> typeof()运算符");
+            Operators.TypeOf_Operator();
+            Console.WriteLine("\n> nameof()运算符");
+            Operators.NameOf_Operator();
+            //自定义强制类型转换
+            Console.WriteLine("\n> 自定义强制类型转换");
+            Currency currency = new Currency(50, 20);
+            Console.WriteLine($"currency :{currency}");
+            float money = currency;
+            Console.WriteLine($"转换后获得的金额数值为(强制转换为float)：{money}");
+            money += 1;
+            Currency reconvertValue = (Currency)money;
+            Console.WriteLine($"{money}转化为Currency:{reconvertValue}");
+
+            //Console.ReadLine();
         }
 
         private static void FileAndStream_Test()
