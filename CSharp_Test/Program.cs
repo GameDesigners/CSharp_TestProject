@@ -31,7 +31,11 @@ namespace CSharp_Test
             //Generic_Test();
             //Array_And_Tuple_Test();
 
-            Operators_AndForceTypeConvert_Test();
+            //Operators_AndForceTypeConvert_Test();
+
+            //Delegate_Lambda_Event();
+
+            String_Pattern();
             //FileAndStream_Test();
 
             //Network_Test();
@@ -195,6 +199,9 @@ namespace CSharp_Test
             if (t1.Equals(t2)) Console.WriteLine("the same content");
         }
 
+        /// <summary>
+        /// 操作符
+        /// </summary>
         private static void Operators_AndForceTypeConvert_Test()
         {
             Console.WriteLine("\n> check和uncheck运算符");
@@ -222,6 +229,107 @@ namespace CSharp_Test
             //Console.ReadLine();
         }
 
+        private static void Delegate_Lambda_Event()
+        {
+            Console.WriteLine("\n> 委托的基本使用");
+            string str = "this is lower char";
+            Delegates.UpperChar upperchar = new Delegates.UpperChar(str.ToUpper);
+            Delegates.UpperChar upperChar1 = str.ToUpper;
+            Console.WriteLine($"{str} 使用委托实例：upperchar 返回的结果为：{upperchar()}");
+            Console.WriteLine($"{str} 用upperchar.Invoke()返回的结果一致：{upperchar.Invoke()}");  //是直接调用的编译器版本（即即使你用上面的调用方式，编译器也会帮你改成此行的方式）
+            Console.WriteLine($"{str} 用委托推断声明的委托变量返回结果     ：{upperChar1.Invoke()}");
+
+
+            Console.WriteLine("\n> 使用委托数组");
+            Delegates.DoubleOp[] doubleOps =
+            {
+                MathOperations.MultiplyByTwo,
+                MathOperations.Square
+            };
+
+            for(int index=0;index<doubleOps.Length;index++)
+            {
+                Console.WriteLine($"使用方法{index}");
+                Console.WriteLine($"Value is 2.0,使用方法的返回结果为：{doubleOps[index](2.0)}");
+                Console.WriteLine($"Value is 7.94,使用方法的返回结果为：{doubleOps[index](7.94)}");
+                Console.WriteLine($"Value is 1.414,使用方法的返回结果为：{doubleOps[index](1.414)}");
+            }
+
+
+            Console.WriteLine("\n> 使用Func<>做函数的参数");
+            Employee[] employees =
+            {
+                new Employee("Bugs Bunny",20000),
+                new Employee("Elmer Fudd",10000),
+                new Employee("Daffy Duck",25000),
+                new Employee("Wile Coyote",1000000.38m),
+                new Employee("Fogtorn Leghorn",23000),
+                new Employee("Road Runner",50000),
+            };
+            BubbleSorter.Sort(employees, Employee.CompareSalary);
+            foreach (var em in employees)
+                Console.WriteLine(em);
+
+
+            Console.WriteLine("\n> 多播委托");
+            Action<double> operations = MathOperations.MultiplayByTwoResult;
+            operations += MathOperations.SquareResult;
+            operations.Invoke(10.2);
+
+
+            Console.WriteLine("\n> 匿名方法");
+            string mid = ", middle part";
+            //Func<string, string> anonDel = delegate (string param)
+            Func<string,string> anonDel = param=>  //Lambda表达式的写法
+            {
+                param += mid;
+                param += " add this was added to the string.";
+                return param;
+            };
+            Console.WriteLine(anonDel("Start of string"));
+
+
+            Console.WriteLine("\n> 闭包");
+            int someVal = 5;
+            Func<int, int> f = x => { someVal += x; x = x + someVal;return x; };
+            Console.WriteLine($"lambda实现的委托f返回的结果为{f(3)}");
+            Console.WriteLine($"现在someVal的值为:{someVal}");
+
+            Console.WriteLine("\n> 事件的使用");
+            var dealer = new CarDealer();
+            var daniel = new Consumer("Daniel");
+            dealer.NewCarInfo += daniel.NewCarIsHere;
+            dealer.NewCar("Mercedes");
+
+            var sebastian = new Consumer("Sebastian");
+            dealer.NewCarInfo += sebastian.NewCarIsHere;
+            dealer.NewCar("Sebastian");
+        }
+
+        private static void String_Pattern()
+        {
+            Console.WriteLine("\n> FormattableString的使用");
+            int param1 = 1;
+            int param2 = 2;
+            int param3 = 3;
+            FormattableString s = $"The data {param1},{param2},{param3}";
+            Console.WriteLine($"Format:{s.Format}");
+            for (int index = 0; index < s.ArgumentCount; index++)
+                Console.WriteLine($"argument {index}:{s.GetArgument(index)}");
+
+            Console.WriteLine("\n> 给字符串插值使用[其他区域:中国、美国等]值");
+            var day = new DateTime(2025, 02, 12);
+            Console.WriteLine($"{day:d}");
+            Console.WriteLine(String_Class.Invariant($"{day:d}"));
+
+            Console.WriteLine("\n> 日期和时间的数据格式");
+            var now = DateTime.Now;
+            Console.WriteLine($"{now:D}");
+            Console.WriteLine($"{now:d}");
+
+            Console.WriteLine("\n> 正则表达式");
+            StringPattern.Find1(StringPattern.input,@"\bn");
+        }
         private static void FileAndStream_Test()
         {
             Console.WriteLine("\n\n.......C#文件和流测试的代码....................................................");
