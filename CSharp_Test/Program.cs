@@ -23,6 +23,7 @@ namespace CSharp_Test
         public string FullName => $"{FirstName} {LastName}";
 
         //int? canNull = null;
+
         static void Main(string[] args)
         {
 
@@ -35,13 +36,19 @@ namespace CSharp_Test
 
             //Delegate_Lambda_Event();
 
-            String_Pattern();
+            //String_Pattern();
             //FileAndStream_Test();
 
             //Network_Test();
 
+            //XML_JSON_Test();
+            Children c = new Children();
+
+            Console.WriteLine(GetChildrenTypeByParentParam(c));
 
         }
+
+        public static string GetChildrenTypeByParentParam(Parent _parent) => _parent.GetType().ToString();
 
         public static int Function(int x=1, int y=1) => x * y;
 
@@ -435,6 +442,13 @@ namespace CSharp_Test
         {
             Console.WriteLine("\n\n.......C#网络测试的代码....................................................");
             
+        }
+
+        private static void XML_JSON_Test()
+        {
+            //XML_Test.ReadTextNodes();
+            //XML_Test.ReadElementContent();
+            XML_Test.ReadElementContent2();
         }
     }
 }
